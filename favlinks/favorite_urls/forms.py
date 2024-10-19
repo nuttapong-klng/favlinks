@@ -7,8 +7,8 @@ from .models import Tag
 
 class FavoriteUrlForm(forms.ModelForm):
     title = forms.CharField()
-    category = forms.ModelChoiceField(queryset=Category.objects.all())
-    tags = forms.ModelMultipleChoiceField(queryset=Tag.objects.all())
+    category = forms.ModelChoiceField(queryset=Category.objects.all(), required=False)
+    tags = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(), required=False)
 
     class Meta:
         model = FavoriteUrl
@@ -17,4 +17,12 @@ class FavoriteUrlForm(forms.ModelForm):
             "url",
             "category",
             "tags",
+        ]
+
+
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = [
+            "name",
         ]

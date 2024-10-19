@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+  Category List
+{% endblock title %}
+{% block content %}
+  <div class="container">
+    <h2>Category List</h2>
+    <div>
+      <a href="{% url 'favorite_urls:category-create' %}"
+         class="btn btn-primary">Add</a>
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Favorited URL Count</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for category in categories %}
+          <tr>
+            <td>{{ category.name }}</td>
+            <td>{{ category.url_count }}</td>
+            <td>
+              <a href="{% url 'favorite_urls:category-edit' category.id %}"
+                 class="btn btn-primary">Edit</a>
+              <a href="{% url 'favorite_urls:category-delete' category.id %}"
+                 class="btn btn-danger"
+                 onclick="return confirm('Confirm Deleting this Category?');">Delete</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock content %}

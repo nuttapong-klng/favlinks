@@ -1,24 +1,22 @@
 from django.views import defaults as default_views
 
-from favlinks.favorite_urls.models import FavoriteUrl
 
-
-def get_and_validate_ownership_of_favorite_url(request, favorite_url_id):
+def get_and_validate_ownership(request, model, instance_id):
     error = False
     error_view = None
-    favorite_url = FavoriteUrl.objects.filter(
-        id=favorite_url_id,
+    instance = model.objects.filter(
+        id=instance_id,
     ).first()
-    if not favorite_url:
+    if not instance:
         error = True
         error_view = default_views.page_not_found(
             request,
             Exception("Favorite URL not found"),
         )
-    elif favorite_url.owner != request.user:
+    elif instance.owner != request.user:
         error = True
         error_view = default_views.permission_denied(
             request,
             Exception("You are not the owner of this favorite URL"),
         )
-    return favorite_url, error, error_view
+    return instance, error, error_view
