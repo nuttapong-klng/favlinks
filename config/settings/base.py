@@ -86,6 +86,7 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
+    "favlinks.favorite_urls",
     "favlinks.users",
     # Your stuff: custom apps go here
 ]
