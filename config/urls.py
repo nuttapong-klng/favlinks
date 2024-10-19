@@ -22,6 +22,10 @@ urlpatterns = [
     path(settings.ADMIN_URL, admin.site.urls),
     # User management
     path("users/", include("favlinks.users.urls", namespace="users")),
+    path(
+        "favorite_urls/",
+        include("favlinks.favorite_urls.urls", namespace="favorite_urls"),
+    ),
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
     # ...
