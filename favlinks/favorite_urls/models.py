@@ -39,6 +39,10 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def favorite_urls_count(self):
+        return self.favorite_urls.count()
+
 
 class Tag(models.Model):
     name = models.CharField(max_length=100, unique=True)

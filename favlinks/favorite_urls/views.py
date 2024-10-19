@@ -142,7 +142,11 @@ class CategoryEditView(LoginRequiredMixin, View):
 
 class CategoryListView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        context = {"categories": Category.objects.filter(owner=request.user)}
+        context = {
+            "categories": Category.objects.filter(
+                owner=request.user,
+            ).prefetch_related("favorite_urls"),
+        }
         return render(request, "favorite_urls/category_list.html", context)
 
 

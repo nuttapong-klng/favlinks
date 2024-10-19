@@ -24,7 +24,7 @@
         {% for category in categories %}
           <tr>
             <td>{{ category.name }}</td>
-            <td>{{ category.url_count }}</td>
+            <td>{{ category.favorite_urls_count }}</td>
             <td>
               <a href="{% url 'favorite_urls:category-edit' category.id %}"
                  class="btn btn-primary">Edit</a>
