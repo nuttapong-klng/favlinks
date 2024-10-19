@@ -11,7 +11,7 @@ class FavoriteUrl(models.Model):
     )
     category = models.ForeignKey(
         "Category",
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         related_name="favorite_urls",
         blank=True,
         null=True,
@@ -30,6 +30,11 @@ class FavoriteUrl(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
+    owner = models.ForeignKey(
+        "users.User",
+        on_delete=models.CASCADE,
+        related_name="categories",
+    )
 
     def __str__(self):
         return self.name
@@ -37,6 +42,11 @@ class Category(models.Model):
 
 class Tag(models.Model):
     name = models.CharField(max_length=100, unique=True)
+    owner = models.ForeignKey(
+        "users.User",
+        on_delete=models.CASCADE,
+        related_name="tags",
+    )
 
     def __str__(self):
         return self.name
