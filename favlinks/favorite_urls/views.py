@@ -76,7 +76,11 @@ class FavoriteUrlEditView(LoginRequiredMixin, View):
 
 class FavoriteUrlListView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        context = {"favorite_urls": FavoriteUrl.objects.filter(owner=request.user)}
+        context = {
+            "favorite_urls": FavoriteUrl.objects.filter(owner=request.user)
+            .select_related("category")
+            .prefetch_related("tags"),
+        }
         return render(request, "favorite_urls/favoriteurl_list.html", context)
 
 

@@ -27,7 +27,7 @@
             <td>{{ url.title }}</td>
             <td>{{ url.url }}</td>
             <td>{{ url.category }}</td>
-            <td>{{ url.tags.all }}</td>
+            <td>{{ url.tags.all|join:", " }}</td>
             <td>
               <a href="{% url 'favorite_urls:edit' url.id %}" class="btn btn-primary">Edit</a>
               <a href="{% url 'favorite_urls:delete' url.id %}"
