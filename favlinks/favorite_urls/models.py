@@ -21,6 +21,7 @@ class FavoriteUrl(models.Model):
         related_name="favorite_urls",
         blank=True,
     )
+    url_valid = models.BooleanField(default=None, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
