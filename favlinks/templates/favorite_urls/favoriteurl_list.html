@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+  Favorite URL
+{% endblock title %}
+{% block content %}
+  <div class="container">
+    <h2>Favorite URLs</h2>
+    <div>
+      <a href="{% url 'favorite_urls:create' %}" class="btn btn-primary">Add</a>
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>URL</th>
+          <th>Category</th>
+          <th>Tags</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for url in favorite_urls %}
+          <tr>
+            <td>{{ url.title }}</td>
+            <td>{{ url.url }}</td>
+            <td></td>
+            <td></td>
+            <td>
+              <a href="{% url 'favorite_urls:create' %}"class="btn btn-primary">View</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock content %}
