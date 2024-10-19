@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+  {{ action }} Tag
+{% endblock title %}
+{% block content %}
+  <h1>{{ action }} Tag</h1>
+  <form class="form-horizontal" method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <div class="control-group">
+      <div class="controls">
+        {% if action == "Create" %}
+          <button type="submit" class="btn btn-primary">Add</button>
+        {% elif action == "Edit" %}
+          <button type="submit" class="btn btn-primary">Update</button>
+          <a href="{% url 'favorite_urls:tag-delete' form.instance.id %}"
+             class="btn btn-danger"
+             onclick="return confirm('Confirm Deleting this Tag?');">Delete</a>
+        {% endif %}
+      </div>
+    </div>
+  </form>
+{% endblock content %}

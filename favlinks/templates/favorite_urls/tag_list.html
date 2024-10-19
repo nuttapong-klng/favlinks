@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+  Tag List
+{% endblock title %}
+{% block content %}
+  <div class="container">
+    <h2>Tag List</h2>
+    <div>
+      <a href="{% url 'favorite_urls:tag-create' %}" class="btn btn-primary">Add</a>
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Favorited URL Count</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for tag in tags %}
+          <tr>
+            <td>{{ tag.name }}</td>
+            <td>{{ tag.favorite_urls_count }}</td>
+            <td>
+              <a href="{% url 'favorite_urls:tag-edit' tag.id %}"
+                 class="btn btn-primary">Edit</a>
+              <a href="{% url 'favorite_urls:tag-delete' tag.id %}"
+                 class="btn btn-danger"
+                 onclick="return confirm('Confirm Deleting this Tag?');">Delete</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock content %}

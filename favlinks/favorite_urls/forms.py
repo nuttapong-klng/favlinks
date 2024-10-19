@@ -26,3 +26,11 @@ class CategoryForm(forms.ModelForm):
         fields = [
             "name",
         ]
+
+
+class TagForm(forms.ModelForm):
+    class Meta:
+        model = Tag
+        fields = [
+            "name",
+        ]

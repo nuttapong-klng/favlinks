@@ -54,3 +54,7 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.name
+
+    @property
+    def favorite_urls_count(self):
+        return self.favorite_urls.count()

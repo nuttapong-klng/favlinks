@@ -5,8 +5,10 @@ from django.views import View
 
 from favlinks.favorite_urls.forms import CategoryForm
 from favlinks.favorite_urls.forms import FavoriteUrlForm
+from favlinks.favorite_urls.forms import TagForm
 from favlinks.favorite_urls.models import Category
 from favlinks.favorite_urls.models import FavoriteUrl
+from favlinks.favorite_urls.models import Tag
 from favlinks.favorite_urls.utils import get_and_validate_ownership
 
 
@@ -30,27 +32,27 @@ class FavoriteUrlCreateView(LoginRequiredMixin, View):
 
 class FavoriteUrlDeleteView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        favorite_url, error, error_view = get_and_validate_ownership(
+        instance, error, error_view = get_and_validate_ownership(
             request,
             FavoriteUrl,
             kwargs["id"],
         )
         if error:
             return error_view
-        favorite_url.delete()
+        instance.delete()
         return redirect("favorite_urls:list")
 
 
 class FavoriteUrlEditView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        favorite_url, error, error_view = get_and_validate_ownership(
+        instance, error, error_view = get_and_validate_ownership(
             request,
             FavoriteUrl,
             kwargs["id"],
         )
         if error:
             return error_view
-        form = FavoriteUrlForm(instance=favorite_url)
+        form = FavoriteUrlForm(instance=instance)
         context = {
             "form": form,
             "action": "Edit",
@@ -58,14 +60,14 @@ class FavoriteUrlEditView(LoginRequiredMixin, View):
         return render(request, "favorite_urls/favoriteurl_create.html", context)
 
     def post(self, request, *args, **kwargs):
-        favorite_url, error, error_view = get_and_validate_ownership(
+        instance, error, error_view = get_and_validate_ownership(
             request,
             FavoriteUrl,
             kwargs["id"],
         )
         if error:
             return error_view
-        form = FavoriteUrlForm(request.POST, instance=favorite_url)
+        form = FavoriteUrlForm(request.POST, instance=instance)
         if form.is_valid():
             form.save()
             return redirect("favorite_urls:list")
@@ -98,27 +100,27 @@ class CategoryCreateView(LoginRequiredMixin, View):
 
 class CategoryDeleteView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        favorite_url, error, error_view = get_and_validate_ownership(
+        instance, error, error_view = get_and_validate_ownership(
             request,
             Category,
             kwargs["id"],
         )
         if error:
             return error_view
-        favorite_url.delete()
+        instance.delete()
         return redirect("favorite_urls:category-list")
 
 
 class CategoryEditView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        favorite_url, error, error_view = get_and_validate_ownership(
+        instance, error, error_view = get_and_validate_ownership(
             request,
             Category,
             kwargs["id"],
         )
         if error:
             return error_view
-        form = CategoryForm(instance=favorite_url)
+        form = CategoryForm(instance=instance)
         context = {
             "form": form,
             "action": "Edit",
@@ -126,14 +128,14 @@ class CategoryEditView(LoginRequiredMixin, View):
         return render(request, "favorite_urls/category_create.html", context)
 
     def post(self, request, *args, **kwargs):
-        favorite_url, error, error_view = get_and_validate_ownership(
+        instance, error, error_view = get_and_validate_ownership(
             request,
             Category,
             kwargs["id"],
         )
         if error:
             return error_view
-        form = CategoryForm(request.POST, instance=favorite_url)
+        form = CategoryForm(request.POST, instance=instance)
         if form.is_valid():
             form.save()
             return redirect("favorite_urls:category-list")
@@ -150,6 +152,78 @@ class CategoryListView(LoginRequiredMixin, View):
         return render(request, "favorite_urls/category_list.html", context)
 
 
+class TagCreateView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        form = TagForm()
+        context = {
+            "form": form,
+            "action": "Create",
+        }
+        return render(request, "favorite_urls/tag_create.html", context)
+
+    def post(self, request, *args, **kwargs):
+        form = TagForm(request.POST)
+        form.instance.owner = request.user
+        if form.is_valid():
+            form.save()
+            return redirect("favorite_urls:tag-list")
+        return None
+
+
+class TagDeleteView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        instance, error, error_view = get_and_validate_ownership(
+            request,
+            Tag,
+            kwargs["id"],
+        )
+        if error:
+            return error_view
+        instance.delete()
+        return redirect("favorite_urls:tag-list")
+
+
+class TagEditView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        instance, error, error_view = get_and_validate_ownership(
+            request,
+            Tag,
+            kwargs["id"],
+        )
+        if error:
+            return error_view
+        form = TagForm(instance=instance)
+        context = {
+            "form": form,
+            "action": "Edit",
+        }
+        return render(request, "favorite_urls/tag_create.html", context)
+
+    def post(self, request, *args, **kwargs):
+        instance, error, error_view = get_and_validate_ownership(
+            request,
+            Tag,
+            kwargs["id"],
+        )
+        if error:
+            return error_view
+        form = TagForm(request.POST, instance=instance)
+        if form.is_valid():
+            form.save()
+            return redirect("favorite_urls:tag-list")
+        return None
+
+
+class TagListView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        context = {
+            "tags": Tag.objects.filter(
+                owner=request.user,
+            ).prefetch_related("favorite_urls"),
+        }
+        return render(request, "favorite_urls/tag_list.html", context)
+
+
 favorite_url_create_view = FavoriteUrlCreateView.as_view()
 favorite_url_delete_view = FavoriteUrlDeleteView.as_view()
 favorite_url_edit_view = FavoriteUrlEditView.as_view()
@@ -159,3 +233,8 @@ category_create_view = CategoryCreateView.as_view()
 category_delete_view = CategoryDeleteView.as_view()
 category_edit_view = CategoryEditView.as_view()
 category_list_view = CategoryListView.as_view()
+
+tag_create_view = TagCreateView.as_view()
+tag_delete_view = TagDeleteView.as_view()
+tag_edit_view = TagEditView.as_view()
+tag_list_view = TagListView.as_view()

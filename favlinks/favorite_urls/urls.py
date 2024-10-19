@@ -8,6 +8,10 @@ from .views import favorite_url_create_view
 from .views import favorite_url_delete_view
 from .views import favorite_url_edit_view
 from .views import favorite_url_list_view
+from .views import tag_create_view
+from .views import tag_delete_view
+from .views import tag_edit_view
+from .views import tag_list_view
 
 app_name = "favorite_urls"
 urlpatterns = [
@@ -23,4 +27,8 @@ urlpatterns = [
     ),
     path("category/edit/<int:id>/", view=category_edit_view, name="category-edit"),
     path("category/list/", view=category_list_view, name="category-list"),
+    path("tag/create/", view=tag_create_view, name="tag-create"),
+    path("tag/delete/<int:id>/", view=tag_delete_view, name="tag-delete"),
+    path("tag/edit/<int:id>/", view=tag_edit_view, name="tag-edit"),
+    path("tag/list/", view=tag_list_view, name="tag-list"),
 ]
