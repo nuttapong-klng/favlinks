@@ -40,7 +40,12 @@ class FavoriteUrlDeleteView(LoginRequiredMixin, View):
 
 class FavoriteUrlEditView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        favorite_url = FavoriteUrl.objects.get(id=kwargs["id"], owner=request.user)
+        favorite_url, error, error_view = get_and_validate_ownership_of_favorite_url(
+            request,
+            kwargs["id"],
+        )
+        if error:
+            return error_view
         form = FavoriteUrlForm(instance=favorite_url)
         context = {
             "form": form,
@@ -49,7 +54,12 @@ class FavoriteUrlEditView(LoginRequiredMixin, View):
         return render(request, "favorite_urls/favoriteurl_create.html", context)
 
     def post(self, request, *args, **kwargs):
-        favorite_url = FavoriteUrl.objects.get(id=kwargs["id"], owner=request.user)
+        favorite_url, error, error_view = get_and_validate_ownership_of_favorite_url(
+            request,
+            kwargs["id"],
+        )
+        if error:
+            return error_view
         form = FavoriteUrlForm(request.POST, instance=favorite_url)
         if form.is_valid():
             form.save()
