@@ -5,6 +5,7 @@ from django.views import View
 
 from favlinks.favorite_urls.forms import FavoriteUrlForm
 from favlinks.favorite_urls.models import FavoriteUrl
+from favlinks.favorite_urls.utils import get_and_validate_ownership_of_favorite_url
 
 
 class FavoriteUrlCreateView(LoginRequiredMixin, View):
@@ -23,6 +24,18 @@ class FavoriteUrlCreateView(LoginRequiredMixin, View):
             form.save()
             return redirect("favorite_urls:list")
         return None
+
+
+class FavoriteUrlDeleteView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        favorite_url, error, error_view = get_and_validate_ownership_of_favorite_url(
+            request,
+            kwargs["id"],
+        )
+        if error:
+            return error_view
+        favorite_url.delete()
+        return redirect("favorite_urls:list")
 
 
 class FavoriteUrlEditView(LoginRequiredMixin, View):
@@ -51,5 +64,6 @@ class FavoriteUrlListView(LoginRequiredMixin, View):
 
 
 favorite_url_create_view = FavoriteUrlCreateView.as_view()
+favorite_url_delete_view = FavoriteUrlDeleteView.as_view()
 favorite_url_edit_view = FavoriteUrlEditView.as_view()
 favorite_url_list_view = FavoriteUrlListView.as_view()
