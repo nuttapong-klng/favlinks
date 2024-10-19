@@ -3,11 +3,11 @@
 {% load crispy_forms_tags %}
 
 {% block title %}
-  Favorite URL
+  Favorited URL List
 {% endblock title %}
 {% block content %}
   <div class="container">
-    <h2>Favorite URLs</h2>
+    <h2>Favorited URL List</h2>
     <div>
       <a href="{% url 'favorite_urls:create' %}" class="btn btn-primary">Add</a>
     </div>
@@ -29,7 +29,7 @@
             <td></td>
             <td></td>
             <td>
-              <a href="{% url 'favorite_urls:create' %}"class="btn btn-primary">View</a>
+              <a href="{% url 'favorite_urls:edit' url.id %}" class="btn btn-primary">Edit</a>
             </td>
           </tr>
         {% endfor %}
