@@ -30,6 +30,9 @@
             <td></td>
             <td>
               <a href="{% url 'favorite_urls:edit' url.id %}" class="btn btn-primary">Edit</a>
+              <a href="{% url 'favorite_urls:delete' url.id %}"
+                 class="btn btn-danger"
+                 onclick="return confirm('Confirm Deleting this URL?');">Delete</a>
             </td>
           </tr>
         {% endfor %}

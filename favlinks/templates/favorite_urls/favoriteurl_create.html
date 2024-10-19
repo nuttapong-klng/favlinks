@@ -16,6 +16,9 @@
           <button type="submit" class="btn btn-primary">Add</button>
         {% elif action == "Edit" %}
           <button type="submit" class="btn btn-primary">Update</button>
+          <a href="{% url 'favorite_urls:delete' form.instance.id %}"
+             class="btn btn-danger"
+             onclick="return confirm('Confirm Deleting this URL?');">Delete</a>
         {% endif %}
       </div>
     </div>
