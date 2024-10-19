@@ -8,7 +8,6 @@ def get_and_validate_ownership_of_favorite_url(request, favorite_url_id):
     error_view = None
     favorite_url = FavoriteUrl.objects.filter(
         id=favorite_url_id,
-        owner=request.user,
     ).first()
     if not favorite_url:
         error = True
@@ -16,7 +15,7 @@ def get_and_validate_ownership_of_favorite_url(request, favorite_url_id):
             request,
             Exception("Favorite URL not found"),
         )
-    if favorite_url.owner != request.user:
+    elif favorite_url.owner != request.user:
         error = True
         error_view = default_views.permission_denied(
             request,
