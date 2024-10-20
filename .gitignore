@@ -279,3 +279,4 @@ favlinks/media/
 .env
 .envs/*
 !.envs/.local/
+cli/favlinks_cli
