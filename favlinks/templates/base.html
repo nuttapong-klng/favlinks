@@ -107,7 +107,11 @@
         {% endif %}
         {% block main %}
           {% block content %}
-            <p>Use this document as a way to quick start any new project.</p>
+            <br />
+            <p>Welcome! This is a website for saving your favorited links</p>
+            <p>
+              <a href="{% url 'favorite_urls:list' %}">Click here</a> to start using our website
+            </p>
           {% endblock content %}
         {% endblock main %}
       </div>
