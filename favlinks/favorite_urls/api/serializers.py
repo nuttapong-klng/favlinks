@@ -39,6 +39,11 @@ class FavoriteUrlSerializer(serializers.ModelSerializer):
             "updated_at",
         ]
 
+    def create(self, validated_data):
+        user = self.context.get("request").user
+        validated_data["owner"] = user
+        return super().create(validated_data)
+
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -49,6 +54,11 @@ class CategorySerializer(serializers.ModelSerializer):
             "favorite_urls_count",
         ]
 
+    def create(self, validated_data):
+        user = self.context.get("request").user
+        validated_data["owner"] = user
+        return super().create(validated_data)
+
 
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
@@ -58,3 +68,8 @@ class TagSerializer(serializers.ModelSerializer):
             "name",
             "favorite_urls_count",
         ]
+
+    def create(self, validated_data):
+        user = self.context.get("request").user
+        validated_data["owner"] = user
+        return super().create(validated_data)
