@@ -38,3 +38,23 @@ class FavoriteUrlSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
         ]
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = [
+            "id",
+            "name",
+            "favorite_urls_count",
+        ]
+
+
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = [
+            "id",
+            "name",
+            "favorite_urls_count",
+        ]
